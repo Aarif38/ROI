@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnalyticsScreen - Cyberpunk UI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/recharts@2.10.0/dist/Recharts.js"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+                'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+                sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script type="text/babel" data-type="module">
+        const { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } = Recharts;
+        
+        // ProgressBar Component
+        const ProgressBar = ({ label, value, color }) => {
+            return React.createElement('div', { className: 'mb-4' },
+                React.createElement('div', { className: 'flex justify-between mb-2' },
+                    React.createElement('span', { className: 'text-sm font-medium text-gray-300' }, label),
+                    React.createElement('span', { className: 'text-sm font-medium text-gray-300' }, value + '%')
+                ),
+                React.createElement('div', { className: 'w-full bg-gray-800 rounded-full h-2.5 overflow-hidden' },
+                    React.createElement('div', {
+                        className: 'h-2.5 rounded-full transition-all duration-300',
+                        style: {
+                            width: value + '%',
+                            backgroundColor: color,
+                            boxShadow: '0 0 10px ' + color
+                        }
+                    })
+                )
+            );
+        };
+
+        const AnalyticsScreen = () => {
+            // Radar Chart Data
+            const radarData = [
+                { skill: 'Hafıza', value: 85 },
+                { skill: 'Mantık', value: 78 },
+                { skill: 'Dikkat', value: 92 },
+                { skill: 'Hız', value: 70 },
+                { skill: 'Sözel', value: 88 },
+            ];
+
+            // Bar Chart Data
+            const weeklyActivityData = [
+                { day: 'Pt', activity: 65 },
+                { day: 'Sa', activity: 45 },
+                { day: 'Ça', activity: 80 },
+                { day: 'Pe', activity: 55 },
+                { day: 'Cu', activity: 90 },
+                { day: 'Ct', activity: 75 },
+                { day: 'Pz', activity: 60 },
+            ];
+
+            // Weekly Progress Data
+            const weeklyProgress = [
+                { label: 'Hafıza', value: 85, color: '#00F0FF' },
+                { label: 'Mantık', value: 78, color: '#A855F7' },
+                { label: 'Dikkat', value: 92, color: '#EC4899' },
+                { label: 'Hız', value: 70, color: '#10B981' },
+                { label: 'Sözel', value: 88, color: '#F59E0B' },
+            ];
+
+            return React.createElement('div', { className: 'min-h-screen bg-gray-900 text-white p-8' },
+                React.createElement('div', { className: 'max-w-7xl mx-auto' },
+                    // Header
+                    React.createElement('div', { className: 'mb-8' },
+                        React.createElement('h1', { 
+                            className: 'text-4xl font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent'
+                        }, 'Analitik Gösterge Paneli'),
+                        React.createElement('p', { className: 'text-gray-400 mt-2' }, 'Performans ve gelişim takibi')
+                    ),
+
+                    React.createElement('div', { className: 'grid grid-cols-1 lg:grid-cols-2 gap-8' },
+                        // Radar Chart Section
+                        React.createElement('div', { 
+                            className: 'bg-gray-800 rounded-lg p-6 border border-cyan-500/30 shadow-lg shadow-cyan-500/10'
+                        },
+                            React.createElement('h2', { className: 'text-2xl font-semibold mb-4 text-cyan-400' }, 'Beceri Analizi'),
+                            React.createElement(ResponsiveContainer, { width: '100%', height: 300 },
+                                React.createElement(RadarChart, { data: radarData },
+                                    React.createElement(PolarGrid, { stroke: '#374151' }),
+                                    React.createElement(PolarAngleAxis, { 
+                                        dataKey: 'skill',
+                                        tick: { fill: '#9CA3AF', fontSize: 12 }
+                                    }),
+                                    React.createElement(PolarRadiusAxis, { 
+                                        angle: 90,
+                                        domain: [0, 100],
+                                        tick: { fill: '#9CA3AF' }
+                                    }),
+                                    React.createElement(Radar, {
+                                        name: 'Beceriler',
+                                        dataKey: 'value',
+                                        stroke: '#00F0FF',
+                                        fill: '#00F0FF',
+                                        fillOpacity: 0.6
+                                    })
+                                )
+                            )
+                        ),
+
+                        // Bar Chart Section
+                        React.createElement('div', { 
+                            className: 'bg-gray-800 rounded-lg p-6 border border-purple-500/30 shadow-lg shadow-purple-500/10'
+                        },
+                            React.createElement('h2', { className: 'text-2xl font-semibold mb-4 text-purple-400' }, 'Haftalık Aktivite'),
+                            React.createElement(ResponsiveContainer, { width: '100%', height: 300 },
+                                React.createElement(BarChart, { data: weeklyActivityData },
+                                    React.createElement(CartesianGrid, { 
+                                        strokeDasharray: '3 3',
+                                        stroke: '#374151',
+                                        opacity: 0.3
+                                    }),
+                                    React.createElement(XAxis, {
+                                        dataKey: 'day',
+                                        tick: { fill: '#9CA3AF', fontSize: 12 },
+                                        axisLine: { stroke: '#4B5563' }
+                                    }),
+                                    React.createElement(YAxis, { hide: true }),
+                                    React.createElement(Tooltip, {
+                                        contentStyle: {
+                                            backgroundColor: '#1F2937',
+                                            border: 'none',
+                                            borderRadius: '8px',
+                                            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3)'
+                                        },
+                                        labelStyle: { color: '#9CA3AF' },
+                                        itemStyle: { color: '#00F0FF' }
+                                    }),
+                                    React.createElement(Bar, {
+                                        dataKey: 'activity',
+                                        fill: '#00F0FF',
+                                        radius: [8, 8, 0, 0],
+                                        style: { filter: 'drop-shadow(0 0 8px #00F0FF)' }
+                                    })
+                                )
+                            )
+                        ),
+
+                        // Weekly Progress Section
+                        React.createElement('div', { 
+                            className: 'bg-gray-800 rounded-lg p-6 border border-pink-500/30 shadow-lg shadow-pink-500/10 lg:col-span-2'
+                        },
+                            React.createElement('h2', { className: 'text-2xl font-semibold mb-6 text-pink-400' }, 'Haftalık Gelişim'),
+                            React.createElement('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-6' },
+                                weeklyProgress.map((item, index) =>
+                                    React.createElement(ProgressBar, {
+                                        key: index,
+                                        label: item.label,
+                                        value: item.value,
+                                        color: item.color
+                                    })
+                                )
+                            )
+                        ),
+
+                        // Stats Cards
+                        React.createElement('div', { 
+                            className: 'bg-gray-800 rounded-lg p-6 border border-green-500/30 shadow-lg shadow-green-500/10'
+                        },
+                            React.createElement('h2', { className: 'text-2xl font-semibold mb-4 text-green-400' }, 'İstatistikler'),
+                            React.createElement('div', { className: 'space-y-4' },
+                                React.createElement('div', { className: 'flex justify-between items-center p-3 bg-gray-700/50 rounded-lg' },
+                                    React.createElement('span', { className: 'text-gray-300' }, 'Toplam Oturumlar'),
+                                    React.createElement('span', { className: 'text-2xl font-bold text-cyan-400' }, '247')
+                                ),
+                                React.createElement('div', { className: 'flex justify-between items-center p-3 bg-gray-700/50 rounded-lg' },
+                                    React.createElement('span', { className: 'text-gray-300' }, 'Ortalama Skor'),
+                                    React.createElement('span', { className: 'text-2xl font-bold text-purple-400' }, '82%')
+                                ),
+                                React.createElement('div', { className: 'flex justify-between items-center p-3 bg-gray-700/50 rounded-lg' },
+                                    React.createElement('span', { className: 'text-gray-300' }, 'En İyi Skor'),
+                                    React.createElement('span', { className: 'text-2xl font-bold text-pink-400' }, '98%')
+                                )
+                            )
+                        ),
+
+                        // Achievements
+                        React.createElement('div', { 
+                            className: 'bg-gray-800 rounded-lg p-6 border border-yellow-500/30 shadow-lg shadow-yellow-500/10'
+                        },
+                            React.createElement('h2', { className: 'text-2xl font-semibold mb-4 text-yellow-400' }, 'Başarılar'),
+                            React.createElement('div', { className: 'space-y-3' },
+                                React.createElement('div', { className: 'flex items-center p-3 bg-gray-700/50 rounded-lg' },
+                                    React.createElement('div', { 
+                                        className: 'w-12 h-12 bg-gradient-to-br from-cyan-400 to-purple-500 rounded-full flex items-center justify-center mr-3'
+                                    },
+                                        React.createElement('span', { className: 'text-2xl' }, '🏆')
+                                    ),
+                                    React.createElement('div', null,
+                                        React.createElement('p', { className: 'font-semibold text-gray-200' }, 'Hafıza Ustası'),
+                                        React.createElement('p', { className: 'text-sm text-gray-400' }, '100 görev tamamlandı')
+                                    )
+                                ),
+                                React.createElement('div', { className: 'flex items-center p-3 bg-gray-700/50 rounded-lg' },
+                                    React.createElement('div', { 
+                                        className: 'w-12 h-12 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center mr-3'
+                                    },
+                                        React.createElement('span', { className: 'text-2xl' }, '⚡')
+                                    ),
+                                    React.createElement('div', null,
+                                        React.createElement('p', { className: 'font-semibold text-gray-200' }, 'Hız Şampiyonu'),
+                                        React.createElement('p', { className: 'text-sm text-gray-400' }, 'Rekor sürede tamamlandı')
+                                    )
+                                ),
+                                React.createElement('div', { className: 'flex items-center p-3 bg-gray-700/50 rounded-lg' },
+                                    React.createElement('div', { 
+                                        className: 'w-12 h-12 bg-gradient-to-br from-pink-400 to-yellow-500 rounded-full flex items-center justify-center mr-3'
+                                    },
+                                        React.createElement('span', { className: 'text-2xl' }, '🎯')
+                                    ),
+                                    React.createElement('div', null,
+                                        React.createElement('p', { className: 'font-semibold text-gray-200' }, 'Dikkat Ustası'),
+                                        React.createElement('p', { className: 'text-sm text-gray-400' }, 'Kusursuz performans')
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(AnalyticsScreen));
+    </script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</body>
+</html>
