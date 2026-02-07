@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AnalyticsScreen - Cyberpunk UI</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/recharts@2.10.0/dist/Recharts.js"></script>
@@ -22,7 +23,7 @@
 <body>
     <div id="root"></div>
     
-    <script type="text/babel" data-type="module">
+    <script type="text/babel" data-presets="react">
         const { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } = Recharts;
         
         // ProgressBar Component
@@ -239,6 +240,5 @@
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(React.createElement(AnalyticsScreen));
     </script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </body>
 </html>

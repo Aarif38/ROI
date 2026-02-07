@@ -130,7 +130,7 @@ const AnalyticsScreen = () => {
                   axisLine={{ stroke: '#4B5563' }}
                 />
                 <YAxis
-                  hide={true}
+                  hide
                 />
                 <Tooltip
                   contentStyle={{
